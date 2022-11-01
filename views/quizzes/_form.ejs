@@ -1,0 +1,17 @@
+<label class="control-label">Запитання:</label>
+<input type="text" id="question" class="form-control" name="quiz[question]" value="<%= quiz.question %>"/>
+<label class="control-label">Відповідь:</label>
+<input type="text" id="answer" class="form-control" name="quiz[answer]" value="<%= quiz.answer %>"/>
+<label class="control-label">Складність:</label>
+<select class="form-control" name="quiz[complexity]">
+	<option value="Simple" <%= (quiz.complexity == 'Simple' || quiz.complexity == null)?'selected':'' %>>Просте</option>
+	<option value="Normal" <%= (quiz.complexity == 'Normal')?'selected':'' %>>Середнє</option>
+	<option value="Complicated" <%= (quiz.complexity == 'Complicated')?'selected':'' %>>Складне</option>
+</select>
+<label class="control-label">Картинка:</label>
+<input type="file" accept="image/*" id="image" name="image"/>
+<br/>
+<p>
+	<a class="btn btn-sm btn-primary" href="/quizzes" role="button">Відмінити</a>
+	<input class="btn btn-sm btn-primary" type="submit" value="Підтвердити">
+</p>

@@ -1,0 +1,13 @@
+<div class="jumbotron">
+  <%if (quiz.image){%>
+  <center><img class="img-rounded img-responsive" src="/media/<%= quiz.image %>"  width="200"></center>
+  <%}%>
+  <form method="get" action="/quizzes/<%= quiz.id %>/answer">
+    <h3><%= quiz.question %> (<%= quiz.complexity %>)</h3>
+    <input type="text" name="answer" value="" class="form-control"/>
+    <br/>
+    <p>
+      <input class="btn btn-sm btn-primary" type="submit" value="Надіслати">
+    </p>
+  </form>
+</div>
