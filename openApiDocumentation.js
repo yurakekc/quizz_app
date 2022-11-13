@@ -38,13 +38,13 @@ module.exports = {
   ],
   tags: [
     {
-      name: 'CRUD operations'
+      name: 'Quiz operations'
     }
   ],
   paths: {
     '/quiz': {
       get: {
-        tags: ['CRUD operations'],
+        tags: ['Quiz operations'],
         description: 'Get quiz',
         operationId: 'getQuiz',
         parameters: [
@@ -88,7 +88,7 @@ module.exports = {
     },
     '/users': {
       get: {
-        tags: ['CRUD operations'],
+        tags: ['User operations'],
         description: 'Get users',
         operationId: 'getUsers',
         parameters: [
@@ -140,7 +140,7 @@ module.exports = {
         }
       },
       post: {
-        tags: ['CRUD operations'],
+        tags: ['User operations'],
         description: 'Create users',
         operationId: 'createUsers',
         parameters: [],
