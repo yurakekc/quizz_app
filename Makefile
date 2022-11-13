@@ -7,8 +7,11 @@ default: start
 install:
 	npm install
 
-start:
+start_ui:
 	node server.js
+
+start_api:
+	node serverAPI.js
 
 help: ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of"

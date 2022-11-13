@@ -54,7 +54,6 @@ app.use(function(req, res, next) {
 });
 // OpenAPI (swagger)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
-app.use('/', require('./routes/index'));
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -62,7 +61,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', 3001);
 
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);

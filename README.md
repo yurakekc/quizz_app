@@ -12,17 +12,20 @@ Clone this repository and install node modules
 ```sh
 $ git clone https://github.com/nazarlviv07/quizz_app.git
 $ cd quizz_app
-$ npm install
+$ make install
 ```
 
-Create a .env file in the root directory with required environment variables
+Start BE
 ```sh
-DATABASE_URL=sqlite://:@:/
-DATABASE_STORAGE=node-quiz.sqlite
-PASSWORD_ENCRYPTION_KEY=insert_some_random_key_here
+$ make start_api
+```
+You can open API documentation on site http://localhost:3001/api-docs/
+
+Start UI
+```sh
+$ make start_ui
 ```
 
-Start the app
-```sh
-$ node server.js
-```
+You can open UI on site http://localhost:3000/
+
+
