@@ -84,37 +84,32 @@ module.exports = {
             }
           }
         }
-      }
-    },
-    '/save_answer': {
+      },
       post: {
         tags: ['Quiz operations'],
         description: 'Save quiz',
         operationId: 'saveQuiz',
-        parameters: [
-          {
-            name: 'userId',
-            in: 'header',
-            schema: {
-              $ref: '#/components/schemas/userId'
-            },
-            required: true,
-            description: 'User ID'
+        parameters: [],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/SaveQuizDto'
+              }
+            }
           },
-          {
-            name: "quiz_id",
-            type: 'integer',
-            example: 1
-          },
-          {
-            name: "user_answer",
-            type: 'string',
-            example: "=== is a strict equal"
-          },
-        ],
+          required: true
+        },
         responses: {
           '200': {
-            description: 'Answer successfully saved',
+            description: 'Save quiz',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Quiz'
+                }
+              }
+            }
           },
           '400': {
             description: 'Missing parameters',
@@ -273,19 +268,32 @@ module.exports = {
           startTime: {
             $ref: '#/components/schemas/dateTime'
           },
-          question_number: {
+          questionNumber: {
             type: 'integer',
-            example: 2
+            example: 3,
           },
-          total_questions_number: {
+          totalQuestionsNumber: {
             type: 'integer',
-            example: 5
+            example: 10,
           },
           questionsWithOptions: {
             type: 'array',
             items: {
               $ref: '#/components/schemas/questionsWithOptions'
             }
+          },
+        }
+      },
+      SaveQuizDto: {
+        type: 'object',
+        properties: {
+          quizId: {
+            type: 'integer',
+            example: 3,
+          },
+          answear: {
+            type: 'string',
+            example: "=== is strict equal",
           },
         }
       },
