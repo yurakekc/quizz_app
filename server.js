@@ -52,8 +52,7 @@ app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
-// OpenAPI (swagger)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
+
 app.use('/', require('./routes/index'));
 
 app.use(function(req, res, next) {

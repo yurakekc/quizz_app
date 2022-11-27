@@ -86,6 +86,53 @@ module.exports = {
         }
       }
     },
+    '/save_answer': {
+      post: {
+        tags: ['Quiz operations'],
+        description: 'Save quiz',
+        operationId: 'saveQuiz',
+        parameters: [
+          {
+            name: 'userId',
+            in: 'header',
+            schema: {
+              $ref: '#/components/schemas/userId'
+            },
+            required: true,
+            description: 'User ID'
+          },
+          {
+            name: "quiz_id",
+            type: 'integer',
+            example: 1
+          },
+          {
+            name: "user_answer",
+            type: 'string',
+            example: "=== is a strict equal"
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Answer successfully saved',
+          },
+          '400': {
+            description: 'Missing parameters',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Error'
+                },
+                example: {
+                  message: 'companyId is missing',
+                  internal_code: 'missing_parameters'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     '/users': {
       get: {
         tags: ['User operations'],
@@ -225,6 +272,14 @@ module.exports = {
         properties: {
           startTime: {
             $ref: '#/components/schemas/dateTime'
+          },
+          question_number: {
+            type: 'integer',
+            example: 2
+          },
+          total_questions_number: {
+            type: 'integer',
+            example: 5
           },
           questionsWithOptions: {
             type: 'array',
