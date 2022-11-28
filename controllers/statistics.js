@@ -3,7 +3,7 @@ var models = require('../models/models.js');
 exports.calculate = function(req, res, next) {
   var with_comments = [];
   var no_comments;
-  models.Quiz.count().then(function(quizzes) {
+  models.Quiz_question.count().then(function(quizzes) {
     models.Comment.findAll({
       where: {
         publish: true

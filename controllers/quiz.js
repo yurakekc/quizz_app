@@ -15,7 +15,7 @@ exports.ownershipRequired = function(req, res, next) {
 
 // Autoload :id
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.find({
+  models.Quiz_question.find({
     where: {
       id: Number(quizId)
     },
@@ -55,7 +55,7 @@ exports.index = function(req, res) {
     _page = 'quiz-index-user';
   }
 
-  models.Quiz.findAll(options).then(
+  models.Quiz_question.findAll(options).then(
     function(quizzes) {
       res.render('quizzes/index.ejs', {
         page: _page,
@@ -78,16 +78,16 @@ exports.show = function(req, res) {
 };
 
 // GET /quizzes/:id/answer
-exports.answer = function(req, res) {
+exports.correct_answer = function(req, res) {
   var result = 'Не правильно';
-  if (req.query.answer === req.quiz.answer) {
+  if (req.query.correct_answer === req.quiz.correct_answer) {
     result = 'Правильно';
   }
   res.render(
-    'quizzes/answer', {
-      page: 'quiz-answer',
+    'quizzes/correct_answer', {
+      page: 'quiz-correct_answer',
       quiz: req.quiz,
-      answer: result,
+      correct_answer: result,
       errors: []
     }
   );
@@ -95,9 +95,9 @@ exports.answer = function(req, res) {
 
 // GET /quizzes/new
 exports.new = function(req, res) {
-  var quiz = models.Quiz.build({
-    question: 'Question text.',
-    answer: 'Answer text.'
+  var quiz = models.Quiz_question.build({
+    questions: 'Question text.',
+    correct_answer: 'Answer text.'
   });
 
   res.render('quizzes/new', {
@@ -115,7 +115,7 @@ exports.create = function(req, res) {
     req.body.quiz.image = req.files.image.name;
   }
 
-  var quiz = models.Quiz.build(req.body.quiz);
+  var quiz = models.Quiz_question.build(req.body.quiz);
 
   quiz
     .validate()
@@ -130,7 +130,7 @@ exports.create = function(req, res) {
         } else {
           quiz
             .save({
-              fields: ['question', 'answer', 'UserId', 'complexity', 'image']
+              fields: ['questions', 'correct_answer', 'UserId', 'complexity', 'image']
             })
             .then(function() {
               res.redirect('/quizzes')
@@ -161,8 +161,8 @@ exports.update = function(req, res) {
   if (req.files.image) {
     req.quiz.image = req.files.image.name;
   }
-  req.quiz.question = req.body.quiz.question;
-  req.quiz.answer = req.body.quiz.answer;
+  req.quiz.questions = req.body.quiz.questions;
+  req.quiz.correct_answer = req.body.quiz.correct_answer;
   req.quiz.complexity = req.body.quiz.complexity;
 
   req.quiz
@@ -177,7 +177,7 @@ exports.update = function(req, res) {
         } else {
           req.quiz
             .save({
-              fields: ['question', 'answer', 'complexity', 'image']
+              fields: ['questions', 'correct_answer', 'complexity', 'image']
             })
             .then(function() {
               res.redirect('/quizzes');
