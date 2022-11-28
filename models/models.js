@@ -20,7 +20,7 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
 });
 
 var quiz_path = path.join(__dirname, 'quiz');
-var Quiz = sequelize.import(quiz_path);
+var Quiz_question = sequelize.import(quiz_path);
 
 var comment_path = path.join(__dirname, 'comment');
 var Comment = sequelize.import(comment_path);
@@ -28,13 +28,13 @@ var Comment = sequelize.import(comment_path);
 var user_path = path.join(__dirname, 'user');
 var User = sequelize.import(user_path);
 
-Comment.belongsTo(Quiz);
-Quiz.hasMany(Comment);
+Comment.belongsTo(Quiz_question);
+Quiz_question.hasMany(Comment);
 
-Quiz.belongsTo(User);
-User.hasMany(Quiz);
+Quiz_question.belongsTo(User);
+User.hasMany(Quiz_question);
 
-exports.Quiz = Quiz;
+exports.Quiz_question = Quiz_question;
 exports.Comment = Comment;
 exports.User = User;
 
@@ -52,17 +52,17 @@ sequelize.sync().then(function() {
         }]
       ).then(function() {
         console.log('Database (user table) initialized');
-        Quiz.count().then(function(count) {
+        Quiz_question.count().then(function(count) {
           if (count === 0) {
-            Quiz.bulkCreate(
+            Quiz_question.bulkCreate(
               [{
-                question: 'What is == in JavaScript?',
-                answer: 'Оператор рівності',
+                questions: 'What is == in JavaScript?',
+                correct_answer: 'Оператор рівності',
                 complexity: 'Simple',
                 UserId: 2
               }, {
-                question: 'What is != in JavaScript??',
-                answer: 'Оператор нерівності',
+                questions: 'What is != in JavaScript??',
+                correct_answer: 'Оператор нерівності',
                 complexity: 'Complicated',
                 UserId: 2
               }]
