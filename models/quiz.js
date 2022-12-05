@@ -20,6 +20,9 @@ module.exports = function(sequelize, DataTypes) {
       image: {
         type: DataTypes.STRING
       },
+      incorrect_answers: {
+        type: DataTypes.JSON
+      },
       complexity: {
         type: DataTypes.STRING
       }
