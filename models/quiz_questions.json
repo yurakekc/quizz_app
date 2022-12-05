@@ -1,38 +1,32 @@
 [{
     "questions": "What is == in JavaScript?",
     "correct_answer": "Оператор рівності",
-    "complexity": "simple",
-    "UserId": 2
+    "complexity": "simple"
 },
 {
     "questions": "What is == in JavaScript?",
     "correct_answer": "Оператор рівності",
-    "complexity": "simple",
-    "UserId": 2
+    "complexity": "simple"
 },
 {
     "questions": "Запитання просте 3? ",
     "correct_answer": "Правильна відповідь 3",
-    "complexity": "normal",
-    "UserId": 2
+    "complexity": "normal"
 },
 {
     "questions": "Запитання середнє 1? ",
     "correct_answer": "Правильна відповідь 1",
-    "complexity": "normal",
-    "UserId": 2
+    "complexity": "normal"
 },
 {
     "questions": "Запитання середнє 2? ",
     "correct_answer": "Правильна відповідь 2",
-    "complexity": "normal",
-    "UserId": 2
+    "complexity": "normal"
 },
 {
     "questions": "Запитання складне 1? ",
     "correct_answer": "Правильна відповідь 1",
-    "complexity": "complicated",
-    "UserId": 2
+    "complexity": "complicated"
 }
 ]
 

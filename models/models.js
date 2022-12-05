@@ -28,9 +28,6 @@ var Quiz_question = sequelize.import(quiz_path);
 var user_path = path.join(__dirname, 'user');
 var User = sequelize.import(user_path);
 
-Quiz_question.belongsTo(User);
-User.hasMany(Quiz_question);
-
 exports.Quiz_question = Quiz_question;
 exports.User = User;
 

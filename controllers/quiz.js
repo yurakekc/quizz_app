@@ -127,7 +127,7 @@ exports.create = function(req, res) {
         } else {
           quiz
             .save({
-              fields: ['questions', 'correct_answer', 'UserId', 'complexity', 'image']
+              fields: ['questions', 'correct_answer', 'complexity', 'image']
             })
             .then(function() {
               res.redirect('/quizzes')
