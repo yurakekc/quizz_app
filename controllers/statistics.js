@@ -1,26 +1,35 @@
 var models = require('../models/models.js');
 
 exports.calculate = function(req, res, next) {
-  var with_comments = [];
-  var no_comments;
-  models.Quiz_question.count().then(function(quizzes) {
-    models.Comment.findAll({
-      where: {
-        publish: true
+  var options = { where :{
+    complexity: "complicated"
+  }}
+  models.Quiz_question.findAll().then(function(quiz_questions) {
+    simple_questions = 0;
+    normal_questions = 0;
+    complicated_questions = 0;
+    for (const key in quiz_questions) {
+      complexity = quiz_questions[key].complexity
+      if (complexity == "simple"){
+        simple_questions += 1
+      }else if (complexity == "normal"){
+        normal_questions += 1
+
+      }else if (complexity == "complicated"){
+        complicated_questions += 1
       }
-    }).then(function(comments) {
-      no_comments = quizzes;
-      for (var i = 0; i < comments.length; i++) {
-        if (with_comments[comments[i].QuizId] === undefined) {
-          no_comments--;
-        }
-        with_comments[comments[i].QuizId] = 1;
-      }
+      console.log("simple_questions = " + simple_questions)
+      console.log("normal_questions = " + normal_questions)
+      console.log("complicated_questions = " + complicated_questions)
+    }
+    total_questions = simple_questions + normal_questions + complicated_questions;
       res.render('statistics', {
         page: 'statistics',
-        quizzes: quizzes
-       // TODO Повернути к-сть простих запитань, середніх та складних запитань
+        total_questions: total_questions,
+        simple_questions: simple_questions,
+        normal_questions: normal_questions,
+        complicated_questions: complicated_questions,
       });
     });
-  });
 }
+

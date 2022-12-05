@@ -1,3 +1,4 @@
+
 var path = require('path');
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var DB_name = (url[6] || null);
@@ -9,6 +10,8 @@ var port = (url[5] || null);
 var host = (url[4] || null);
 var storage = process.env.DATABASE_STORAGE;
 var Sequelize = require('sequelize');
+
+const quiz_questions_data = require("./quiz_questions.json");
 
 var sequelize = new Sequelize(DB_name, user, pwd, {
   dialect: protocol,
@@ -22,20 +25,13 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz_question = sequelize.import(quiz_path);
 
-var comment_path = path.join(__dirname, 'comment');
-var Comment = sequelize.import(comment_path);
-
 var user_path = path.join(__dirname, 'user');
 var User = sequelize.import(user_path);
-
-Comment.belongsTo(Quiz_question);
-Quiz_question.hasMany(Comment);
 
 Quiz_question.belongsTo(User);
 User.hasMany(Quiz_question);
 
 exports.Quiz_question = Quiz_question;
-exports.Comment = Comment;
 exports.User = User;
 
 sequelize.sync().then(function() {
@@ -52,21 +48,12 @@ sequelize.sync().then(function() {
         }]
       ).then(function() {
         console.log('Database (user table) initialized');
+
+
         Quiz_question.count().then(function(count) {
           if (count === 0) {
             Quiz_question.bulkCreate(
-              [{
-                questions: 'What is == in JavaScript?',
-                correct_answer: 'Оператор рівності',
-                complexity: 'Simple',
-                UserId: 2
-              }, {
-                questions: 'What is != in JavaScript??',
-                correct_answer: 'Оператор нерівності',
-                complexity: 'Complicated',
-                UserId: 2
-              }]
-              // TODO add other questions
+              quiz_questions_data
             ).then(function() {
               console.log('Database (quiz table) initialized')
             });
