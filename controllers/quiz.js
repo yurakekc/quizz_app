@@ -158,7 +158,7 @@ exports.update = function(req, res) {
   if (req.files.image) {
     req.quiz.image = req.files.image.name;
   }
-  req.quiz.questions = req.body.quiz.questions;
+  req.quiz.question = req.body.quiz.question;
   req.quiz.correct_answer = req.body.quiz.correct_answer;
   req.quiz.complexity = req.body.quiz.complexity;
 
@@ -174,7 +174,7 @@ exports.update = function(req, res) {
         } else {
           req.quiz
             .save({
-              fields: ['questions', 'correct_answer', 'complexity', 'image']
+              fields: ['question', 'correct_answer', 'incorrect_answers', 'complexity', 'image']
             })
             .then(function() {
               res.redirect('/quizzes');

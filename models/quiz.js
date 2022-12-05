@@ -1,7 +1,7 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define(
     'Quiz_question', {
-      questions: {
+      question: {
         type: DataTypes.STRING,
         validate: {
           notEmpty: {
@@ -29,5 +29,4 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
 }
-// TODO  DataTypes.ENUM - for answers 
-// TODO  rename answer to correct_answer   
+   
