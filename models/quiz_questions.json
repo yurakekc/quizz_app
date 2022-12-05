@@ -1,35 +1,35 @@
 [{
-    "questions": "What is == in JavaScript?",
+    "question": "What is == in JavaScript?",
     "correct_answer": "Оператор рівності",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "simple"
 },
 {
-    "questions": "What is == in JavaScript?",
+    "question": "What is == in JavaScript?",
     "correct_answer": "Оператор рівності",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "simple"
 },
 {
-    "questions": "Запитання просте 3? ",
+    "question": "Запитання просте 3? ",
     "correct_answer": "Правильна відповідь 3",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "normal"
 },
 {
-    "questions": "Запитання середнє 1? ",
+    "question": "Запитання середнє 1? ",
     "correct_answer": "Правильна відповідь 1",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "normal"
 },
 {
-    "questions": "Запитання середнє 2? ",
+    "question": "Запитання середнє 2? ",
     "correct_answer": "Правильна відповідь 2",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "normal"
 },
 {
-    "questions": "Запитання складне 1? ",
+    "question": "Запитання складне 1? ",
     "correct_answer": "Правильна відповідь 1",
     "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
     "complexity": "complicated"
