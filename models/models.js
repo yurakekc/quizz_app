@@ -11,7 +11,8 @@ var host = (url[4] || null);
 var storage = process.env.DATABASE_STORAGE;
 var Sequelize = require('sequelize');
 
-const quiz_questions_data = require("./quiz_questions.json");
+const quiz_questions_data = require("./quiz_question.json");
+const user_quiz_data = require("./user_quiz.json");
 
 var sequelize = new Sequelize(DB_name, user, pwd, {
   dialect: protocol,
@@ -22,8 +23,8 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
   omitNull: true // only Postgres
 });
 
-var quiz_path = path.join(__dirname, 'quiz');
-var Quiz_question = sequelize.import(quiz_path);
+var quiz_question_path = path.join(__dirname, 'quiz_question');
+var Quiz_question = sequelize.import(quiz_question_path);
 
 var user_quiz_path = path.join(__dirname, 'user_quiz');
 var User_quiz = sequelize.import(user_quiz_path);
@@ -48,11 +49,11 @@ sequelize.sync().then(function() {
         }]
       ).then(function() {
         User_quiz.count().then(function(count) {
-          if (count === 1) {
-            Quiz_question.bulkCreate(
-              quiz_questions_data
+          if (count === 0) {
+            User_quiz.bulkCreate(
+              user_quiz_data
             ).then(function() {
-              console.log('Database (quiz table) initialized')
+              console.log('Database (User_quiz table) initialized')
             });
           };
         });
