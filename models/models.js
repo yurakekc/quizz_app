@@ -25,6 +25,9 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz_question = sequelize.import(quiz_path);
 
+var user_quiz_path = path.join(__dirname, 'user_quiz');
+var User_quiz = sequelize.import(user_quiz_path);
+
 var user_path = path.join(__dirname, 'user');
 var User = sequelize.import(user_path);
 
@@ -44,9 +47,16 @@ sequelize.sync().then(function() {
           password: 'user'
         }]
       ).then(function() {
-        console.log('Database (user table) initialized');
-
-
+        User_quiz.count().then(function(count) {
+          if (count === 1) {
+            Quiz_question.bulkCreate(
+              quiz_questions_data
+            ).then(function() {
+              console.log('Database (quiz table) initialized')
+            });
+          };
+        });
+      }).then(function() {
         Quiz_question.count().then(function(count) {
           if (count === 0) {
             Quiz_question.bulkCreate(

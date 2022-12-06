@@ -1,3 +1,4 @@
+const { COMPLEXITY, DEFAULT_COMPLEXITY } = require('./constants');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define(
     'Quiz_question', {
@@ -24,7 +25,8 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.JSON
       },
       complexity: {
-        type: DataTypes.STRING
+        type: DataTypes.ENUM(COMPLEXITY),
+        defaultValue: DEFAULT_COMPLEXITY,
       }
     }
   );

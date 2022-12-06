@@ -28,4 +28,5 @@ $ make start_ui
 
 You can open UI on site http://localhost:3000/
 
-
+## Other
+https://sequelize.org/docs/v7/other-topics/other-data-types/
