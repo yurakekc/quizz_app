@@ -1,4 +1,20 @@
 <div class="jumbotron">
+    Кількість запитань:
+    <ul class="list-group">
+      <li class="list-group-item clearfix">
+        К-сть всіх запитань: <%= total_questions %>
+      </li>
+      <li class="list-group-item clearfix">
+        К-сть простих запитань: <%= simple_questions %>
+      </li>
+      <li class="list-group-item clearfix">
+        К-сть середніх запитань: <%= normal_questions %>
+      </li>
+      <li class="list-group-item clearfix">
+        К-сть складних запитань: <%= complicated_questions %>
+      </li>
+    </ul>
+    Запитання:
   <ul class="list-group">
     <% var i; for (i=0; i < quizzes.length; i++) { %>
     <li class="list-group-item clearfix">
