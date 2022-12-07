@@ -44,7 +44,7 @@
               <li <%if(page=='home'){%> class="active"<%}%>><a href="/">Домашня сторінка</a></li>
               <%if(session.user) {
                 if (session.user.isAdmin) {%>
-              <li <%if(page=='quiz-index'){%> class="active"<%}%>><a href="/quizzes">Запитання</a></li>
+              <li <%if(page=='questions'){%> class="active"<%}%>><a href="/questions">Запитання</a></li>
               <%}
         }%>
               <%if(session.user){%>

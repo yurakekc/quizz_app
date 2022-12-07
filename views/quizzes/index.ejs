@@ -32,14 +32,6 @@
     </li>
     <% } %> 
   </ul>
-  <form method="get" action="/quizzes">
-    <label class="control-label">Пошук:</label>
-    <input type="text" id="search" class="form-control" name="search"/>
-    <br/>
-    <p>
-      <input class="btn btn-sm btn-primary" type="submit" value="Надіслати">
-    </p>
-  </form>
   <%if(session.user){%>
   <a class="btn btn-sm btn-success" href="/quizzes/new">Додати запитання</a>
   <%}%>

@@ -2,6 +2,7 @@ var express = require('express'),
   multer = require('multer'),
   router = express.Router();
 
+var questionController = require('../controllers/question');
 var quizController = require('../controllers/quiz');
 var sessionController = require('../controllers/session');
 var userController = require('../controllers/user');
@@ -39,7 +40,7 @@ router.delete('/user/:userId(\\d+)', sessionController.loginRequired, userContro
 router.get('/user/:userId(\\d+)/quizzes', quizController.index);
 
 
-router.get('/quizzes', quizController.index);
+router.get('/questions', questionController.index);
 router.get('/quizzes/:quizId(\\d+)', quizController.show);
 router.get('/quizzes/:quizId(\\d+)/correct_answer', quizController.correct_answer);
 router.get('/quizzes/new', sessionController.loginRequired, quizController.new);
