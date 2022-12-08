@@ -16,15 +16,15 @@
     </ul>
     Запитання:
   <ul class="list-group">
-    <% var i; for (i=0; i < quizzes.length; i++) { %>
+    <% var i; for (i=0; i < questions.length; i++) { %>
     <li class="list-group-item clearfix">
-      <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
+      <a href="/questions/<%= questions[i].id %>"><%= questions[i].question %></a>
       <%if(session.user) {
-        if (session.user.isAdmin || session.user.id === quizzes[i].UserId) {%>
+        if (session.user.isAdmin || session.user.id === questions[i].UserId) {%>
       <span class="pull-right button-group">
-        <form method="post" action="/quizzes/<%= quizzes[i].id %>?_method=delete">
-          <a href="/quizzes/<%= quizzes[i].id %>/edit" class="btn btn-xs btn-primary">Редагувати</a>
-          <button type="submit" onClick="return confirm('Ви хочите видалити?: <%= quizzes[i].question %>');" class="btn btn-xs btn-danger">Видалити</button>
+        <form method="post" action="/questions/<%= questions[i].id %>?_method=delete">
+          <a href="/questions/<%= questions[i].id %>/edit" class="btn btn-xs btn-primary">Редагувати</a>
+          <button type="submit" onClick="return confirm('Ви хочите видалити?: <%= questions[i].question %>');" class="btn btn-xs btn-danger">Видалити</button>
         </form>
       </span>
       <%}

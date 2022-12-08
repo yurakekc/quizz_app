@@ -73,7 +73,7 @@ exports.index = function(req, res) {
 
   models.Quiz_question.findAll(options).then(
     function(quizzes) {
-      res.render('quizzes/index.ejs', {
+      res.render('questions/index.ejs', {
         page: _page,
         quizzes: quizzes,
         total_questions: total_questions,
@@ -163,18 +163,6 @@ exports.create = function(req, res) {
 
 };
 
-// GET /quizzes/:id/edit
-exports.edit = function(req, res) {
-  var quiz = req.quiz;
-
-  console.log(quiz);
-
-  res.render('quizzes/edit', {
-    page: 'quiz-edit',
-    quiz: quiz,
-    errors: []
-  });
-};
 
 // PUT /quizzes/:id
 exports.update = function(req, res) {
@@ -207,13 +195,4 @@ exports.update = function(req, res) {
     ).catch(function(error) {
       next(error)
     });
-};
-
-// DELETE /questions/:id
-exports.destroy = function(req, res) {
-  req.quiz.destroy().then(function() {
-    res.redirect('/questions');
-  }).catch(function(error) {
-    next(error)
-  });
 };

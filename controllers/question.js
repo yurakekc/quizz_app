@@ -49,10 +49,10 @@ exports.index = function(req, res) {
     });
 
   models.Quiz_question.findAll(options).then(
-    function(quizzes) {
-      res.render('quizzes/index.ejs', {
+    function(questions) {
+      res.render('questions/index.ejs', {
         page: _page,
-        quizzes: quizzes,
+        questions: questions,
         total_questions: total_questions,
         simple_questions: simple_questions,
         normal_questions: normal_questions,
@@ -62,5 +62,28 @@ exports.index = function(req, res) {
     }
   ).catch(function(error) {
     next(error)
+  });
+};
+
+// DELETE /questions/:id
+exports.destroy = function(req, res) {
+  console.log(req);
+  req.quiz.destroy().then(function() {
+    res.redirect('/questions');
+  }).catch(function(error) {
+    next(error)
+  });
+};
+
+// GET /questions/:id/edit
+exports.edit = function(req, res) {
+  var question = req.quiz;
+
+  console.log(question);
+
+  res.render('questions/edit', {
+    page: 'quiz-edit',
+    question: question,
+    errors: []
   });
 };

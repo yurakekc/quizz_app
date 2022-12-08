@@ -45,10 +45,11 @@ router.get('/quizzes/new', sessionController.loginRequired, quizController.new);
 router.post('/quizzes/create', sessionController.loginRequired, multer({
   dest: './public/media/'
 }), quizController.create);
-router.get('/quizzes/:quizId(\\d+)/edit', sessionController.loginRequired, quizController.ownershipRequired, quizController.edit);
+router.get('/questions/:quizId(\\d+)/edit', sessionController.loginRequired, questionController.adminRequired, questionController.edit);
 router.put('/quizzes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, multer({
   dest: './public/media/'
 }), quizController.update);
-router.delete('/quizzes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy);
+
+router.delete('/questions/:quizId(\\d+)', sessionController.loginRequired, questionController.adminRequired, questionController.destroy);
 
 module.exports = router;
