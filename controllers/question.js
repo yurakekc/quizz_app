@@ -2,6 +2,15 @@ var models = require('../models/models.js');
 var url = require('url');
 
 
+exports.adminRequired = function(req, res, next) {
+  var isAdmin = req.session.user.isAdmin;
+  if (isAdmin) {
+    next();
+  } else {
+    res.redirect('/');
+  }
+};
+
 // GET /questions
 exports.index = function(req, res) {
   var options = {};

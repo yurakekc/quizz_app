@@ -40,7 +40,7 @@ router.delete('/user/:userId(\\d+)', sessionController.loginRequired, userContro
 router.get('/user/:userId(\\d+)/quizzes', quizController.index);
 
 
-router.get('/questions', questionController.index);
+router.get('/questions', sessionController.loginRequired, questionController.adminRequired, questionController.index);
 router.get('/quizzes/new', sessionController.loginRequired, quizController.new);
 router.post('/quizzes/create', sessionController.loginRequired, multer({
   dest: './public/media/'
