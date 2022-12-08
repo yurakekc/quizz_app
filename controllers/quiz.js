@@ -32,7 +32,6 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET /quizzes
-// GET /users/:userId/quizzes
 exports.index = function(req, res) {
   var options = {};
   var query = url.parse(req.url, true).query;
@@ -210,10 +209,10 @@ exports.update = function(req, res) {
     });
 };
 
-// DELETE /quizzes/:id
+// DELETE /questions/:id
 exports.destroy = function(req, res) {
   req.quiz.destroy().then(function() {
-    res.redirect('/quizzes');
+    res.redirect('/questions');
   }).catch(function(error) {
     next(error)
   });

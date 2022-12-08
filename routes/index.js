@@ -41,8 +41,6 @@ router.get('/user/:userId(\\d+)/quizzes', quizController.index);
 
 
 router.get('/questions', questionController.index);
-router.get('/quizzes/:quizId(\\d+)', quizController.show);
-router.get('/quizzes/:quizId(\\d+)/correct_answer', quizController.correct_answer);
 router.get('/quizzes/new', sessionController.loginRequired, quizController.new);
 router.post('/quizzes/create', sessionController.loginRequired, multer({
   dest: './public/media/'
