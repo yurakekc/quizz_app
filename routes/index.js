@@ -46,9 +46,9 @@ router.post('/quizzes/create', sessionController.loginRequired, multer({
   dest: './public/media/'
 }), quizController.create);
 router.get('/questions/:quizId(\\d+)/edit', sessionController.loginRequired, questionController.adminRequired, questionController.edit);
-router.put('/quizzes/:quizId(\\d+)', sessionController.loginRequired, quizController.ownershipRequired, multer({
+router.put('/questions/:quizId(\\d+)', sessionController.loginRequired, questionController.adminRequired, multer({
   dest: './public/media/'
-}), quizController.update);
+}), questionController.update);
 
 router.delete('/questions/:quizId(\\d+)', sessionController.loginRequired, questionController.adminRequired, questionController.destroy);
 

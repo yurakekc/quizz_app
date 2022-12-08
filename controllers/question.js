@@ -87,3 +87,37 @@ exports.edit = function(req, res) {
     errors: []
   });
 };
+
+// PUT /questions/:id
+exports.update = function(req, res) {
+  if (req.files.image) {
+    req.question.image = req.files.image.name;
+  }
+
+  req.quiz.question = req.body.question.question;
+  req.quiz.correct_answer = req.body.question.correct_answer;
+  req.quiz.complexity = req.body.question.complexity;
+
+  req.quiz
+    .validate()
+    .then(
+      function(err) {
+        if (err) {
+          res.render('questions/edit', {
+            question: req.quiz,
+            errors: err.errors
+          });
+        } else {
+          req.quiz
+            .save({
+              fields: ['question', 'correct_answer', 'incorrect_answers', 'complexity', 'image']
+            })
+            .then(function() {
+              res.redirect('/questions');
+            });
+        }
+      }
+    ).catch(function(error) {
+      next(error)
+    });
+};

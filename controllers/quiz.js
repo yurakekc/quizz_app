@@ -162,37 +162,3 @@ exports.create = function(req, res) {
     });
 
 };
-
-
-// PUT /quizzes/:id
-exports.update = function(req, res) {
-  if (req.files.image) {
-    req.quiz.image = req.files.image.name;
-  }
-  req.quiz.question = req.body.quiz.question;
-  req.quiz.correct_answer = req.body.quiz.correct_answer;
-  req.quiz.complexity = req.body.quiz.complexity;
-
-  req.quiz
-    .validate()
-    .then(
-      function(err) {
-        if (err) {
-          res.render('quizzes/edit', {
-            quiz: req.quiz,
-            errors: err.errors
-          });
-        } else {
-          req.quiz
-            .save({
-              fields: ['question', 'correct_answer', 'incorrect_answers', 'complexity', 'image']
-            })
-            .then(function() {
-              res.redirect('/quizzes');
-            });
-        }
-      }
-    ).catch(function(error) {
-      next(error)
-    });
-};
