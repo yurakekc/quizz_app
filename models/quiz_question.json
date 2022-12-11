@@ -1,20 +1,68 @@
 [{
-    "question": "What is == in JavaScript?",
-    "correct_answer": "Оператор рівності",
-    "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
+    "question": " Умовний оператор в js-?",
+    "correct_answer": " if  ",
+    "incorrect_answers": ["for "," alert()","prompt()"],
     "complexity": "simple"
 },
 {
-    "question": "What is == in JavaScript?",
-    "correct_answer": "Оператор рівності",
-    "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
+    "question": "Оператор циклу в JS-?",
+    "correct_answer": " for ",
+    "incorrect_answers": ["if  "," alert()","prompt()"],
     "complexity": "simple"
 },
 {
-    "question": "Запитання просте 3? ",
-    "correct_answer": "Правильна відповідь 3",
-    "incorrect_answers": ["dsadsa","fsdfdsf","fsdfdsf"],
-    "complexity": "normal"
+    "question": " Оголошення змінної в js?",
+    "correct_answer": " let ",
+    "incorrect_answers": ["for "," if "," alert()"],
+    "complexity": "simple"
+},
+{
+    "question": " Діалогове вікно, яке показує дані в js ?",
+    "correct_answer": " alert()",
+    "incorrect_answers": ["for "," if "," let "],
+    "complexity": "simple"
+},
+{
+    "question": " Яке діалогове вікно в js запитує дані?",
+    "correct_answer": " prompt() ",
+    "incorrect_answers": ["for "," if "," alert()"],
+    "complexity": "simple"
+},
+{
+    "question": " Тег який додає JavaScript на вебсторінку?",
+    "correct_answer": " script ",
+    "incorrect_answers": ["body "," link "," style "],
+    "complexity": "simple"
+},
+{
+    "question": " Який метод JS додасть анімацію?",
+    "correct_answer": " Так ",
+    "incorrect_answers": ["Ні"],
+    "complexity": "simple"
+},
+{
+    "question": " Який метод JS додасть анімацію? ",
+    "correct_answer": " animate ",
+    "incorrect_answers": ["animation"," transform "," Такого методу не існує "],
+    "complexity": "simple"
+},
+{
+    "question": " Що казує напрямок анімації js ?",
+    "correct_answer": " direction ",
+    "incorrect_answers": ["delay "," id "," duration "],
+    "complexity": "simple"
+},
+{
+    "question": " Число мілісекунд для затримки початку анімації js?",
+    "correct_answer": " delay ",
+    "incorrect_answers": ["delay "," easing "," endDelay "],
+    "complexity": "simple"
+},
+{
+    "question": " Властивість унікальна для animate(): ",
+    "correct_answer": " id ",
+    "incorrect_answers": ["iterations "," fill "," duration "],
+    "complexity": "simple"
 },
 {
     "question": "Запитання середнє 1? ",
