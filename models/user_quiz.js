@@ -19,11 +19,6 @@ module.exports = function(sequelize, DataTypes) {
       },
       questions: {
         type: DataTypes.JSON,
-        validate: {
-          notEmpty: {
-            msg: 'Missing questions'
-          }
-        }
       },
       answers: {
         type: DataTypes.JSON,

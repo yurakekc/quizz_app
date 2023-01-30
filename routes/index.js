@@ -23,6 +23,9 @@ router.get('/author', function(req, res) {
   });
 });
 
+router.get('/quiz/:userId', quizController.get);
+router.post('/quiz', quizController.post);
+
 router.get('/statistics', statisticsController.calculate);
 
 router.param('quizId', quizController.load);

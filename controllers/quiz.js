@@ -13,6 +13,216 @@ exports.ownershipRequired = function(req, res, next) {
   }
 };
 
+exports.post = async function(req, res, next) {
+  var userQuiz = await models.User_quiz.findOne({
+    where: {
+      id: req.body.quizId
+    }
+  });
+  var answers;
+  if(JSON.parse(userQuiz.answers) === "{}") answers = new Object(); else answers = JSON.parse(userQuiz.answers);
+  const answerValues = Object.values(answers);
+  const answersLength = answerValues.length;
+  const questionsArray = JSON.parse(userQuiz.questions)
+
+  if (answersLength === questionsArray.length)
+  {
+    var correctAnswers = answerValues.filter((item) =>  item === true).length;  
+    var percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
+
+    var quizResult = {
+      result: percentageOfCorrectAnswers + "%"
+    }
+
+    res.status(201).send(quizResult).end();
+    return;
+  }
+  else
+  {
+    var currentQuizId = questionsArray[answersLength]
+    var isAnswerCorrect = await models.Quiz_question.findOne({
+      where: {
+        id: currentQuizId
+      }
+    }).then(function(quiz) {
+      if (quiz.correct_answer === req.body.answear)
+      {
+        return true;
+      }
+      else
+      {
+        return false;  
+      }
+    }).catch(function(error) {
+      next(error)
+    });
+  
+    answers[currentQuizId] = isAnswerCorrect;
+    answerValues.push(isAnswerCorrect); 
+
+    console.log(answerValues);
+    await models.User_quiz.update({
+      answers : answers
+    },
+    {
+      where: {
+        id: req.body.quizId
+      }
+    });
+
+    if (answersLength + 1 === questionsArray.length)
+    {
+      var correctAnswers = answerValues.filter((item) =>  item === true).length;  
+      var percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
+  
+      var quizResult = {
+        result: percentageOfCorrectAnswers + "%"
+      }
+  
+      res.status(201).send(quizResult).end();
+      return;
+    }
+  }
+  
+  var nextQuizId = questionsArray[answersLength + 1];
+  await models.Quiz_question.findOne({
+    where: {
+      id: nextQuizId
+    }
+  }).then(function(quiz) {
+    var answers = [...JSON.parse(quiz.incorrect_answers), quiz.correct_answer];
+    console.log(answers);
+    var isCompleted
+    if (answersLength + 1 === questionsArray.length) isCompleted = "Yes"; else isCompleted = "No";
+
+    var response = { 
+      totalQuestionsNumber: questionsArray.length,
+      questionNumber: answersLength + 1,
+      startTime: userQuiz.start_time,
+      questionsWithOptions: {
+        question: quiz.question,
+        isCompleted: isCompleted,
+        answers: answers,
+      }
+    }
+    res.send(response);
+  }).catch(function(error) {
+    next(error)
+  });
+}
+
+// Autoload :userId
+exports.get = async function(req, res, next) {
+  var lastUserQuiz = await models.User_quiz.findOne({
+    where: {
+      user_id: Number(req.params.userId)
+    },
+    order: [['createdAt', 'DESC' ]]   
+  });
+
+var complexity;
+
+if (lastUserQuiz == null)
+{
+  complexity = "simple";
+}
+else
+{
+  const answersObj = JSON.parse(lastUserQuiz.answers);
+  const questionsArray = JSON.parse(lastUserQuiz.questions)
+  var answers = Object.values(answersObj);
+  var correctAnswers = answers.filter((item) =>  item === true).length;  
+  var percentageOfCorrectAnswers = (correctAnswers/questionsArray.length) * 100;
+
+  if (percentageOfCorrectAnswers < 70)
+  {
+    complexity = lastUserQuiz.complexity
+  }
+  else
+  {
+    complexity = ComplexityNextStateMachine(lastUserQuiz.complexity)
+  }
+}
+
+var quizQuestionIds = [];
+
+await models.Quiz_question.findAll({
+  attributes: [
+    'id'
+  ],
+  where: {
+    complexity: complexity
+  },
+  raw: true,
+}).then(function(questionIds){
+  console.log(questionIds);
+  while(quizQuestionIds.length < 5) // number of questions
+  {
+      var quizQuestionId = Math.floor(Math.random() * questionIds.length);
+      console.log(quizQuestionId);
+      var questionId = questionIds[quizQuestionId].id;
+
+      if(!quizQuestionIds.includes(questionId)) 
+      {
+        quizQuestionIds.push(questionId);
+     }
+  }
+});
+
+var userQuizModel = { 
+  user_id: req.params.userId,
+  questions: quizQuestionIds,
+  answers: JSON.stringify(new Object()),
+  complexity: complexity,
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+  start_time: Date.now()
+}
+var userQuiz = await models.User_quiz.build(userQuizModel);
+await userQuiz.save();
+
+await models.Quiz_question.findOne({
+    where: {
+      id: quizQuestionIds[0]
+    }
+  }).then(function(quiz) {
+    var answers = [...JSON.parse(quiz.incorrect_answers), quiz.correct_answer];
+    var response = { 
+        totalQuestionsNumber: userQuizModel.questions.length,
+        questionNumber: 1,
+        startTime: userQuizModel.start_time,
+        questionsWithOptions: {
+          question: quiz.question,
+          isCompleted: "No",
+          answers: answers,
+        }
+      }
+
+    res.send(response);
+  }).catch(function(error) {
+    next(error)
+  });
+};
+
+function ComplexityNextStateMachine(currentState) {
+  var nextState;
+
+  if (currentState === "simple")
+  {
+    nextState = "normal";
+  } 
+  else if (currentState === "normal")
+  {
+    nextState = "complicated";
+  }
+  else if (currentState === "complicated")
+  {
+    nextState = "complicated";
+  }
+
+  return nextState;
+}
+
 // Autoload :id
 exports.load = function(req, res, next, quizId) {
   models.Quiz_question.find({
