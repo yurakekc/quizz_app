@@ -50,7 +50,7 @@ module.exports = {
         parameters: [
           {
             name: 'userId',
-            in: 'header',
+            in: 'path',
             schema: {
               $ref: '#/components/schemas/userId'
             },

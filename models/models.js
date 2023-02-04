@@ -34,6 +34,8 @@ var User = sequelize.import(user_path);
 
 exports.Quiz_question = Quiz_question;
 exports.User = User;
+exports.User_quiz = User_quiz;
+
 
 sequelize.sync().then(function() {
   User.count().then(function(count) {
@@ -45,6 +47,10 @@ sequelize.sync().then(function() {
           isAdmin: true
         }, {
           username: 'user',
+          password: 'user'
+        },
+        {
+          username: 'user111',
           password: 'user'
         }]
       ).then(function() {
