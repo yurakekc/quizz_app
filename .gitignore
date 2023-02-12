@@ -149,3 +149,6 @@ temp/
 # End of https://www.gitignore.io/api/node,macos,visualstudiocode
 
 node-quiz.sqlite
+
+# WebShtorm
+.idea/

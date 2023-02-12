@@ -1,8 +1,10 @@
-var crypto = require('crypto');
-var key = process.env.PASSWORD_ENCRYPTION_KEY;
+let crypto = require('crypto');
+// const key = process.env.PASSWORD_ENCRYPTION_KEY;
+// TODO
+const key = "asdfghjklzxcvbnmqwertyuiop";
 
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define(
+  let User = sequelize.define(
     'User', {
       username: {
         type: DataTypes.STRING,
@@ -12,8 +14,8 @@ module.exports = function(sequelize, DataTypes) {
             msg: 'Missing username'
           },
           isUnique: function(value, next) {
-            var self = this;
-            User.find({
+            let self = this;
+            User.findOne({
                 where: {
                   username: value
                 }
@@ -38,26 +40,25 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         set: function(password) {
-          var encripted = crypto.createHmac('sha1', key).update(password).digest('hex');
+          let encrypted = crypto.createHmac('sha1', key).update(password).digest('hex');
           if (password === '') {
-            encripted = '';
+            encrypted = '';
           }
-          this.setDataValue('password', encripted);
+          this.setDataValue('password', encrypted);
         }
       },
       isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       }
-    }, {
-      instanceMethods: {
-        verifyPassword: function(password) {
-          var encripted = crypto.createHmac('sha1', key).update(password).digest('hex');
-          return encripted === this.password;
-        }
-      }
-    }
+    },
   );
+  // Instance method new way to initialize
+  // https://stackoverflow.com/questions/43954112/cannot-access-sequelize-instance-methods
+  User.prototype.verifyPassword = function(password) {
+    let encrypted = crypto.createHmac('sha1', key).update(password).digest('hex');
+    return encrypted === this.password;
+  }
 
   return User;
 }

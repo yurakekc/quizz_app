@@ -10,8 +10,14 @@ install:
 start_ui:
 	node server.js
 
+start_uid:
+	node --inspect server.js
+
 start_api:
 	node serverAPI.js
+
+start_apid:
+	node --inspect serverAPI.js
 
 help: ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of"

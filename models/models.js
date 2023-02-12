@@ -1,20 +1,20 @@
-
-var path = require('path');
-var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
-var DB_name = (url[6] || null);
-var user = (url[2] || null);
-var pwd = (url[3] || null);
-var protocol = (url[1] || null);
-var dialect = (url[1] || null);
-var port = (url[5] || null);
-var host = (url[4] || null);
-var storage = process.env.DATABASE_STORAGE;
-var Sequelize = require('sequelize');
-
-const quiz_questions_data = require("./quiz_question.json");
-const user_quiz_data = require("./user_quiz.json");
-
-var sequelize = new Sequelize(DB_name, user, pwd, {
+const path = require('path');
+// TODO
+let url = "sqlite://:@:/".match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+let DB_name = (url[6] || null);
+let user = (url[2] || null);
+let pwd = (url[3] || null);
+let protocol = (url[1] || null);
+let dialect = (url[1] || null);
+let port = (url[5] || null);
+let host = (url[4] || null);
+// TODO
+// let storage = process.env.DATABASE_STORAGE;
+let storage = 'node-quiz.sqlite';
+let Sequelize = require('sequelize');
+let quiz_questions_data = require("./quiz_question.json");
+let user_quiz_data = require("./user_quiz.json");
+const sequelize = new Sequelize(DB_name, user, pwd, {
   dialect: protocol,
   protocol: protocol,
   port: port,
@@ -23,18 +23,18 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
   omitNull: true // only Postgres
 });
 
-var quiz_question_path = path.join(__dirname, 'quiz_question');
-var Quiz_question = sequelize.import(quiz_question_path);
+// import models
+const Quiz_question = require(path.join(__dirname, 'quiz_question'))(sequelize, Sequelize.DataTypes)
+const User_quiz = require(path.join(__dirname, 'user_quiz'))(sequelize, Sequelize.DataTypes)
+const User = require(path.join(__dirname, 'user'))(sequelize, Sequelize.DataTypes)
 
-var user_quiz_path = path.join(__dirname, 'user_quiz');
-var User_quiz = sequelize.import(user_quiz_path);
-
-var user_path = path.join(__dirname, 'user');
-var User = sequelize.import(user_path);
+// DB relationships
+// User_quiz.belongsTo(User);
+User.hasMany(User_quiz);
 
 exports.Quiz_question = Quiz_question;
+exports.User_quiz = User_quiz
 exports.User = User;
-exports.User_quiz = User_quiz;
 
 
 sequelize.sync().then(function() {
@@ -59,9 +59,9 @@ sequelize.sync().then(function() {
             User_quiz.bulkCreate(
               user_quiz_data
             ).then(function() {
-              console.log('Database (User_quiz table) initialized')
+              console.debug('Database (User_quiz table) initialized')
             });
-          };
+          }
         });
       }).then(function() {
         Quiz_question.count().then(function(count) {
@@ -69,11 +69,11 @@ sequelize.sync().then(function() {
             Quiz_question.bulkCreate(
               quiz_questions_data
             ).then(function() {
-              console.log('Database (quiz table) initialized')
+              console.debug('Database (quiz table) initialized')
             });
-          };
+          }
         });
       });
-    };
+    }
   });
 });

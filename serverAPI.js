@@ -1,4 +1,4 @@
-var express = require('express'),
+let express = require('express'),
   path = require('path'),
   favicon = require('serve-favicon'),
   logger = require('morgan'),
@@ -10,12 +10,12 @@ var express = require('express'),
   debug = require('debug')('quiz'),
   dotenv = require('dotenv');
 
-var app = express();
-var env = process.env.NODE_ENV || 'dev';
+let app = express();
+let env = process.env.NODE_ENV || 'dev';
 
-if (env == 'dev') {
+if (env === 'dev') {
   dotenv.load();
-};
+}
 
 const swaggerUi = require('swagger-ui-express');
 const openApiDocumentation = require('./openApiDocumentation');
@@ -59,15 +59,13 @@ app.use('/', require('./routes/index'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 app.set('port', 3001);
 
-var server = app.listen(app.get('port'), function() {
+let server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
-
-

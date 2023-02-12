@@ -1,6 +1,30 @@
-<div class="jumbotron">
-  <h3>Додати запитання</h3>
-  <form method="post" action="/quizzes/create" enctype="multipart/form-data">      
-    <% include _form.ejs %>
-  </form>
+<div class="question-container">
+    <h3><%= response.questionsWithOptions.question %></h3>
+    <form>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="answerOption" id="option1" value="<%= response.questionsWithOptions.answers[0] %>">
+            <label class="form-check-label" for="option1">
+                <%= response.questionsWithOptions.answers[0] %>
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="answerOption" id="option2" value="<%= response.questionsWithOptions.answers[1] %>">
+            <label class="form-check-label" for="option2">
+                <%= response.questionsWithOptions.answers[1] %>
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="answerOption" id="option3" value="<%= response.questionsWithOptions.answers[2] %>">
+            <label class="form-check-label" for="option3">
+                <%= response.questionsWithOptions.answers[2] %>
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="answerOption" id="option4" value="<%= response.questionsWithOptions.answers[3] %>">
+            <label class="form-check-label" for="option4">
+                <%= response.questionsWithOptions.answers[3] %>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
 </div>

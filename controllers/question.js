@@ -1,9 +1,9 @@
-var models = require('../models/models.js');
-var url = require('url');
+let models = require('../models/models.js');
+let url = require('url');
 
 
 exports.adminRequired = function(req, res, next) {
-  var isAdmin = req.session.user.isAdmin;
+  let isAdmin = req.session.user.isAdmin;
   if (isAdmin) {
     next();
   } else {
@@ -12,36 +12,38 @@ exports.adminRequired = function(req, res, next) {
 };
 
 // GET /questions
-exports.index = function(req, res) {
-  var options = {};
-  var query = url.parse(req.url, true).query;
+exports.index = function(req, res, next) {
+  let options = {};
+  let query = url.parse(req.url, true).query;
 
-  if (JSON.stringify(query) != '{}' && query.search != '') {
+  if (JSON.stringify(query) !== '{}' && query.search !== '') {
     options = {
       where: ['question like ?', '%' + query.search.replace(/\s+/g, '%') + '%']
     };
     console.log(options);
   }
 
-  var _page = 'quiz-index';
+  let _page = 'quiz-index';
   if (req.user) {
     options.where = {
       UserId: req.user.id
     }
     _page = 'quiz-index-user';
   }
-  models.Quiz_question.findAll().then(function(quiz_questions) {
-    simple_questions = 0;
-    normal_questions = 0;
-    complicated_questions = 0;
-    for (const key in quiz_questions) {
-      complexity = quiz_questions[key].complexity
-      if (complexity == "simple"){
-        simple_questions += 1
-      }else if (complexity == "normal"){
-        normal_questions += 1
 
-      }else if (complexity == "complicated"){
+  let simple_questions = 0;
+  let normal_questions = 0;
+  let complicated_questions = 0;
+  let total_questions;
+
+  models.Quiz_question.findAll().then(function(quiz_questions) {
+    for (const key in quiz_questions) {
+      let complexity = quiz_questions[key].complexity
+      if (complexity === "simple"){
+        simple_questions += 1
+      } else if (complexity === "normal"){
+        normal_questions += 1
+      } else if (complexity === "complicated"){
         complicated_questions += 1
       }
     }
@@ -66,7 +68,7 @@ exports.index = function(req, res) {
 };
 
 // DELETE /questions/:id
-exports.destroy = function(req, res) {
+exports.destroy = function(req, res, next) {
   console.log(req);
   req.quiz.destroy().then(function() {
     res.redirect('/questions');
@@ -77,7 +79,7 @@ exports.destroy = function(req, res) {
 
 // GET /questions/:id/edit
 exports.edit = function(req, res) {
-  var question = req.quiz;
+  let question = req.quiz;
 
   console.log(question);
 
@@ -89,7 +91,7 @@ exports.edit = function(req, res) {
 };
 
 // PUT /questions/:id
-exports.update = function(req, res) {
+exports.update = function(req, res, next) {
   if (req.files.image) {
     req.question.image = req.files.image.name;
   }

@@ -8,7 +8,7 @@ exports.loginRequired = function(req, res, next) {
 
 // Get /login
 exports.new = function(req, res) {
-  var errors = req.session.errors || {};
+  let errors = req.session.errors || {};
   req.session.errors = {};
 
   res.render('sessions/new', {
@@ -20,10 +20,10 @@ exports.new = function(req, res) {
 // POST /login
 exports.create = function(req, res) {
 
-  var login = req.body.login;
-  var password = req.body.password;
+  let login = req.body.login;
+  let password = req.body.password;
 
-  var userController = require('./user');
+  let userController = require('./user');
   userController.auth(login, password, function(error, user) {
 
     if (error) {

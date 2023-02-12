@@ -22,7 +22,12 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING
       },
       incorrect_answers: {
-        type: DataTypes.JSON
+        type: DataTypes.JSON,
+        validate: {
+          notEmpty: {
+            msg: 'Missing answer'
+          }
+        }
       },
       complexity: {
         type: DataTypes.ENUM(COMPLEXITY),
@@ -31,4 +36,3 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
 }
-   

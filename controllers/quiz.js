@@ -1,10 +1,10 @@
-var models = require('../models/models.js');
-var url = require('url');
+let models = require('../models/models.js');
+let url = require('url');
 
 exports.ownershipRequired = function(req, res, next) {
-  var objQuizOwner = req.quiz.UserId;
-  var logUser = req.session.user.id;
-  var isAdmin = req.session.user.isAdmin;
+  let objQuizOwner = req.quiz.UserId;
+  let logUser = req.session.user.id;
+  let isAdmin = req.session.user.isAdmin;
 
   if (isAdmin || objQuizOwner === logUser) {
     next();
@@ -14,23 +14,27 @@ exports.ownershipRequired = function(req, res, next) {
 };
 
 exports.post = async function(req, res, next) {
-  var userQuiz = await models.User_quiz.findOne({
+
+  let userQuiz;
+
+  userQuiz = await models.User_quiz.findOne({
     where: {
       id: req.body.quizId
     }
   });
-  var answers;
+
+  let answers;
   if(JSON.parse(userQuiz.answers) === "{}") answers = new Object(); else answers = JSON.parse(userQuiz.answers);
   const answerValues = Object.values(answers);
   const answersLength = answerValues.length;
-  const questionsArray = JSON.parse(userQuiz.questions)
+  const questionsArray = JSON.parse(userQuiz.questions);
 
   if (answersLength === questionsArray.length)
   {
-    var correctAnswers = answerValues.filter((item) =>  item === true).length;  
-    var percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
+    let correctAnswers = answerValues.filter((item) =>  item === true).length;
+    let percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
 
-    var quizResult = {
+    let quizResult = {
       result: percentageOfCorrectAnswers + "%"
     }
 
@@ -39,20 +43,13 @@ exports.post = async function(req, res, next) {
   }
   else
   {
-    var currentQuizId = questionsArray[answersLength]
-    var isAnswerCorrect = await models.Quiz_question.findOne({
+    let currentQuizId = questionsArray[answersLength]
+    let isAnswerCorrect = models.Quiz_question.findOne({
       where: {
         id: currentQuizId
       }
     }).then(function(quiz) {
-      if (quiz.correct_answer === req.body.answear)
-      {
-        return true;
-      }
-      else
-      {
-        return false;  
-      }
+      return quiz.correct_answer === req.body.answear;
     }).catch(function(error) {
       next(error)
     });
@@ -72,10 +69,10 @@ exports.post = async function(req, res, next) {
 
     if (answersLength + 1 === questionsArray.length)
     {
-      var correctAnswers = answerValues.filter((item) =>  item === true).length;  
-      var percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
+      let correctAnswers = answerValues.filter((item) =>  item === true).length;
+      let percentageOfCorrectAnswers = (correctAnswers/(answersLength + 1)) * 100;
   
-      var quizResult = {
+      let quizResult = {
         result: percentageOfCorrectAnswers + "%"
       }
   
@@ -84,18 +81,18 @@ exports.post = async function(req, res, next) {
     }
   }
   
-  var nextQuizId = questionsArray[answersLength + 1];
+  let nextQuizId = questionsArray[answersLength + 1];
   await models.Quiz_question.findOne({
     where: {
       id: nextQuizId
     }
   }).then(function(quiz) {
-    var answers = [...JSON.parse(quiz.incorrect_answers), quiz.correct_answer];
+    let answers = [quiz.incorrect_answers, quiz.correct_answer];
     console.log(answers);
-    var isCompleted
+    let isCompleted
     if (answersLength + 1 === questionsArray.length) isCompleted = "Yes"; else isCompleted = "No";
 
-    var response = { 
+    let response = {
       totalQuestionsNumber: questionsArray.length,
       questionNumber: answersLength + 1,
       startTime: userQuiz.start_time,
@@ -113,14 +110,19 @@ exports.post = async function(req, res, next) {
 
 // Autoload :userId
 exports.get = async function(req, res, next) {
-  var lastUserQuiz = await models.User_quiz.findOne({
-    where: {
-      user_id: Number(req.params.userId)
-    },
-    order: [['createdAt', 'DESC' ]]   
-  });
 
-var complexity;
+  let user_id = Number(req.params.userId);
+
+  let lastUserQuiz;
+
+  lastUserQuiz = await models.User_quiz.findOne({
+    where: {
+      UserId: user_id
+    },
+    order: [['createdAt', 'DESC' ]]
+  })
+
+let complexity;
 
 if (lastUserQuiz == null)
 {
@@ -129,22 +131,22 @@ if (lastUserQuiz == null)
 else
 {
   const answersObj = JSON.parse(lastUserQuiz.answers);
-  const questionsArray = JSON.parse(lastUserQuiz.questions)
-  var answers = Object.values(answersObj);
-  var correctAnswers = answers.filter((item) =>  item === true).length;  
-  var percentageOfCorrectAnswers = (correctAnswers/questionsArray.length) * 100;
+  const questionsArray = JSON.parse(lastUserQuiz.questions);
+  let answers = Object.values(answersObj);
+  let correctAnswers = answers.filter((item) =>  item === true).length;
+  let percentageOfCorrectAnswers = (correctAnswers/questionsArray.length) * 100;
 
   if (percentageOfCorrectAnswers < 70)
   {
-    complexity = lastUserQuiz.complexity
+    complexity = lastUserQuiz.complexity;
   }
   else
   {
-    complexity = ComplexityNextStateMachine(lastUserQuiz.complexity)
+    complexity = ComplexityNextStateMachine(lastUserQuiz.complexity);
   }
 }
 
-var quizQuestionIds = [];
+let quizQuestionIds = [];
 
 await models.Quiz_question.findAll({
   attributes: [
@@ -158,9 +160,9 @@ await models.Quiz_question.findAll({
   console.log(questionIds);
   while(quizQuestionIds.length < 5) // number of questions
   {
-      var quizQuestionId = Math.floor(Math.random() * questionIds.length);
+      let quizQuestionId = Math.floor(Math.random() * questionIds.length);
       console.log(quizQuestionId);
-      var questionId = questionIds[quizQuestionId].id;
+      let questionId = questionIds[quizQuestionId].id;
 
       if(!quizQuestionIds.includes(questionId)) 
       {
@@ -169,8 +171,8 @@ await models.Quiz_question.findAll({
   }
 });
 
-var userQuizModel = { 
-  user_id: req.params.userId,
+let userQuizModel = {
+  user_id: user_id,
   questions: quizQuestionIds,
   answers: JSON.stringify(new Object()),
   complexity: complexity,
@@ -178,16 +180,23 @@ var userQuizModel = {
   updatedAt: Date.now(),
   start_time: Date.now()
 }
-var userQuiz = await models.User_quiz.build(userQuizModel);
-await userQuiz.save();
+let userQuiz = models.User_quiz.build(userQuizModel);
+
+await userQuiz.save()
+  .then(() => {
+    console.log('User quiz saved successfully');
+  })
+  .catch(function(error) {
+    next(error)
+  });
 
 await models.Quiz_question.findOne({
     where: {
       id: quizQuestionIds[0]
     }
   }).then(function(quiz) {
-    var answers = [...JSON.parse(quiz.incorrect_answers), quiz.correct_answer];
-    var response = { 
+    let answers = [...quiz.incorrect_answers.split(", "), quiz.correct_answer];
+    let response = {
         totalQuestionsNumber: userQuizModel.questions.length,
         questionNumber: 1,
         startTime: userQuizModel.start_time,
@@ -198,14 +207,19 @@ await models.Quiz_question.findOne({
         }
       }
 
-    res.send(response);
+    // res.send(response);
+    res.render('quizzes/new', {
+      page: 'quiz-new',
+      response: response,
+      errors: []});
   }).catch(function(error) {
     next(error)
   });
 };
 
 function ComplexityNextStateMachine(currentState) {
-  var nextState;
+
+  let nextState;
 
   if (currentState === "simple")
   {
@@ -225,7 +239,7 @@ function ComplexityNextStateMachine(currentState) {
 
 // Autoload :id
 exports.load = function(req, res, next, quizId) {
-  models.Quiz_question.find({
+  models.Quiz_question.findOne({
     where: {
       id: Number(quizId)
     }
@@ -242,48 +256,50 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET /quizzes
-exports.index = function(req, res) {
-  var options = {};
-  var query = url.parse(req.url, true).query;
+exports.index = function(req, res, next) {
+  let options = {};
+  let query = url.parse(req.url, true).query;
 
-  if (JSON.stringify(query) != '{}' && query.search != '') {
+  if (JSON.stringify(query) !== '{}' && query.search !== '') {
     options = {
       where: ['question like ?', '%' + query.search.replace(/\s+/g, '%') + '%']
     };
     console.log(options);
   }
 
-  var _page = 'quiz-index';
+  let _page = 'quiz-index';
   if (req.user) {
     options.where = {
       UserId: req.user.id
     }
     _page = 'quiz-index-user';
   }
-  models.Quiz_question.findAll().then(function(quiz_questions) {
-    simple_questions = 0;
-    normal_questions = 0;
-    complicated_questions = 0;
-    for (const key in quiz_questions) {
-      complexity = quiz_questions[key].complexity
-      if (complexity == "simple"){
-        simple_questions += 1
-      }else if (complexity == "normal"){
-        normal_questions += 1
 
-      }else if (complexity == "complicated"){
+  let simple_questions = 0;
+  let normal_questions = 0;
+  let complicated_questions = 0;
+  let total_questions;
+
+  models.Quiz_question.findAll().then(function(quiz_questions) {
+    for (const key in quiz_questions) {
+      let complexity = quiz_questions[key].complexity
+      if (complexity === "simple"){
+        simple_questions += 1
+      } else if (complexity === "normal"){
+        normal_questions += 1
+      } else if (complexity === "complicated"){
         complicated_questions += 1
       }
       console.log("simple_questions = " + simple_questions)
       console.log("normal_questions = " + normal_questions)
       console.log("complicated_questions = " + complicated_questions)
     }
-    total_questions = simple_questions + normal_questions + complicated_questions;
+     total_questions = simple_questions + normal_questions + complicated_questions;
     });
 
   models.Quiz_question.findAll(options).then(
     function(quizzes) {
-      res.render('questions/index.ejs', {
+      res.render('quizzes/new.ejs', {
         page: _page,
         quizzes: quizzes,
         total_questions: total_questions,
@@ -292,14 +308,13 @@ exports.index = function(req, res) {
         complicated_questions: complicated_questions,
         errors: []
       });
-    }
-  ).catch(function(error) {
+  }).catch(function(error) {
     next(error)
   });
 };
 
 // GET /quizzes/:id
-exports.show = function(req, res) {
+exports.show = function(req, res, next) {
   res.render('quizzes/show', {
     page: 'quiz-show',
     quiz: req.quiz,
@@ -308,8 +323,8 @@ exports.show = function(req, res) {
 };
 
 // GET /quizzes/:id/answer
-exports.correct_answer = function(req, res) {
-  var result = 'Не правильно';
+exports.correct_answer = function(req, res, next) {
+  let result = 'Не правильно';
   if (req.query.correct_answer === req.quiz.correct_answer) {
     result = 'Правильно';
   }
@@ -324,8 +339,8 @@ exports.correct_answer = function(req, res) {
 };
 
 // GET /quizzes/new
-exports.new = function(req, res) {
-  var quiz = models.Quiz_question.build({
+exports.new = function(req, res, next) {
+  let quiz = models.Quiz_question.build({
     questions: 'Question text.',
     correct_answer: 'Answer text.'
   });
@@ -338,14 +353,14 @@ exports.new = function(req, res) {
 };
 
 // POST /quizzes/create
-exports.create = function(req, res) {
+exports.create = function(req, res, next) {
 
   req.body.quiz.UserId = req.session.user.id;
   if (req.files.image) {
     req.body.quiz.image = req.files.image.name;
   }
 
-  var quiz = models.Quiz_question.build(req.body.quiz);
+  let quiz = models.Quiz_question.build(req.body.quiz);
 
   quiz
     .validate()
@@ -364,11 +379,10 @@ exports.create = function(req, res) {
             })
             .then(function() {
               res.redirect('/quizzes')
-            })
+            });
         }
       }
     ).catch(function(error) {
       next(error)
-    });
-
+  });
 };

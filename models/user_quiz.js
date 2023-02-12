@@ -1,3 +1,5 @@
+let {User} = require("./models");
+
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define(
     'User_quiz', {
@@ -9,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
           }
         }
       },
-      user_id: {
+      UserId: {
         type: DataTypes.INTEGER,
         validate: {
           notEmpty: {
@@ -35,4 +37,3 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
 }
-   

@@ -1,9 +1,9 @@
-var models = require('../models/models.js');
+const models = require('../models/models.js');
 
 exports.ownershipRequired = function(req, res, next) {
-  var objUser = req.user.id;
-  var logUser = req.session.user.id;
-  var isAdmin = req.session.user.isAdmin;
+  let objUser = req.user.id;
+  let logUser = req.session.user.id;
+  let isAdmin = req.session.user.isAdmin;
 
   if (isAdmin || objUser === logUser) {
     next();
@@ -14,7 +14,7 @@ exports.ownershipRequired = function(req, res, next) {
 
 // Autoload :id
 exports.load = function(req, res, next, userId) {
-  models.User.find({
+  models.User.findOne({
     where: {
       id: Number(userId)
     }
@@ -31,7 +31,7 @@ exports.load = function(req, res, next, userId) {
 };
 
 exports.auth = function(login, password, callback) {
-  models.User.find({
+  models.User.findOne({
     where: {
       username: login
     }
@@ -62,7 +62,7 @@ exports.edit = function(req, res) {
 
 // GET /user
 exports.new = function(req, res) {
-  var user = models.User.build({
+  let user = models.User.build({
     username: '',
     password: ''
   });
@@ -74,8 +74,8 @@ exports.new = function(req, res) {
 };
 
 // POST /user
-exports.create = function(req, res) {
-  var user = models.User.build(req.body.user);
+exports.create = function(req, res, next) {
+  let user = models.User.build(req.body.user);
 
   user
     .validate()
